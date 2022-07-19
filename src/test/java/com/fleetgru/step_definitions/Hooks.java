@@ -6,6 +6,7 @@ import io.cucumber.java.Scenario;
 import org.junit.Before;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.chrome.ChromeOptions;
 
 import java.util.concurrent.TimeUnit;
 
@@ -22,6 +23,8 @@ public class Hooks {
     public void teardownScenario(Scenario scenario){
 
         //scenario.isFailed() ==> if scenario fails this method will return TRUE boolean value
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("start-maximized");
 
         if(scenario.isFailed()){
            final byte[] screenshot = ((TakesScreenshot) Driver.getDriver()).getScreenshotAs(OutputType.BYTES);

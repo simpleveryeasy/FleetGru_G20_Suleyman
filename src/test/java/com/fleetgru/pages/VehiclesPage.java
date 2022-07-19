@@ -32,12 +32,7 @@ public class VehiclesPage extends BasePage {
     @FindBy(xpath = "//div[@class='message']")
     public WebElement exportMessage;
 
-    //-------------------suleyman--------------------
-    @FindBy(xpath = "//i[@class='fa-filter hide-text']")
-    public WebElement filterIcon;
 
-    @FindBy(xpath = "//a[.='Manage filters']")
-    public WebElement manageFiltersButton;
 
 
 }

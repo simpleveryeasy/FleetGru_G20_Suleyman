@@ -11,68 +11,66 @@ import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.safari.SafariDriver;
 
+import java.util.concurrent.TimeUnit;
+
 public class Driver {
 
-    private Driver() {
 
-    }
+    /*
+   Creating s private constructor, so we are closing access to the object out of this class
+    */
+    private Driver(){}
 
-    private static WebDriver driver;
 
-    public static WebDriver getDriver() {
-        // Test
-        if (driver == null) {
-            // this line will tell which browser should open based on the value from properties file
-            String browser = ConfigurationReader.getProperty("browser");
-            switch (browser) {
+    /*
+    We make WebDriver private because we want to close access from outside the class.
+    We make it static because we will use it in a static method
+     */
+    //private static WebDriver driver;
+
+    private static InheritableThreadLocal<WebDriver> driverPool = new InheritableThreadLocal<>();
+
+
+    /*
+    Create a re-usable utility method which will return same driver instance when we call it
+     */
+    public static WebDriver getDriver(){
+        if (driverPool.get() == null){
+
+            /*
+            We read our browserType from configuration.properties
+            This way we can control which browser is opened from outside our code, from configuration.properties
+             */
+            String browserType = ConfigurationReader.getProperty("browser");
+            switch (browserType){
                 case "chrome":
                     WebDriverManager.chromedriver().setup();
-                    driver = new ChromeDriver();
-                    break;
-                case "chrome-headless":
-                    WebDriverManager.chromedriver().setup();
-                    driver = new ChromeDriver(new ChromeOptions().setHeadless(true));
+                    driverPool.set(new ChromeDriver());
+                    driverPool.get().manage().window().maximize();
+                    driverPool.get().manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
                     break;
                 case "firefox":
                     WebDriverManager.firefoxdriver().setup();
-                    driver = new FirefoxDriver();
-                    break;
-                case "firefox-headless":
-                    WebDriverManager.firefoxdriver().setup();
-                    driver = new FirefoxDriver(new FirefoxOptions().setHeadless(true));
-                    break;
-                case "ie":
-                    if (!System.getProperty("os.name").toLowerCase().contains("windows"))
-                        throw new WebDriverException("Your OS doesn't support Internet Explorer");
-                    WebDriverManager.iedriver().setup();
-                    driver = new InternetExplorerDriver();
-                    break;
-
-                case "edge":
-                    if (!System.getProperty("os.name").toLowerCase().contains("windows"))
-                        throw new WebDriverException("Your OS doesn't support Edge");
-                    WebDriverManager.edgedriver().setup();
-                    driver = new EdgeDriver();
-                    break;
-
-                case "safari":
-                    if (!System.getProperty("os.name").toLowerCase().contains("mac"))
-                        throw new WebDriverException("Your OS doesn't support Safari");
-                    WebDriverManager.getInstance(SafariDriver.class).setup();
-                    driver = new SafariDriver();
+                    driverPool.set(new FirefoxDriver());
+                    driverPool.get().manage().window().maximize();
+                    driverPool.get().manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
                     break;
             }
-
         }
+        return driverPool.get();
 
-        return driver;
     }
 
+
+
+    //driver.quit() --> nosuchsession
+    //driver.close() --> sessionidnotmathcing
+    //This method make sure our driver value is always null after using quit() method
     public static void closeDriver() {
-        if (driver != null) {
-            driver.quit();
-            driver = null;
+        if (driverPool.get() != null) {
+            driverPool.get().quit();//this line terminates the current session, value will not be even null
+            driverPool.remove();
         }
-    }
 
+    }
 }

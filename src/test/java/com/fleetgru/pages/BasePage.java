@@ -15,8 +15,8 @@ import java.util.List;
 
 public abstract class BasePage {
 
-    public BasePage(){
-        PageFactory.initElements(Driver.getDriver(),this);
+    public BasePage() {
+        PageFactory.initElements(Driver.getDriver(), this);
     }
 
     //<=========================   Base Elements    ==============================================>
@@ -40,8 +40,15 @@ public abstract class BasePage {
     @FindBy(linkText = "My User")
     public WebElement myUser;
 
+    // to check login correct page(driver->quick launchpad, other->dashboard)
     @FindBy(xpath = "//h1[@class='oro-subtitle']")
     public WebElement homepageSubTitle;
+
+    @FindBy(xpath = "//span[contains(text(),'Fleet') and @class = 'title title-level-1']")
+    public WebElement fleetTab;
+
+    @FindBy(xpath = "//span[.='Vehicles']")
+    public WebElement vehicleModule;
 
     //<=========================   Base Methods    ==============================================>
 
@@ -55,30 +62,10 @@ public abstract class BasePage {
 
     }
 
-    public void navigateToModule(String tab, String module) {
-        String tabLocator = "//span[normalize-space()='" + tab + "' and contains(@class, 'title title-level-1')]";
-        String moduleLocator = "//span[normalize-space()='" + module + "' and contains(@class, 'title title-level-2')]";
-        try {
-            BrowserUtils.waitForClickablility(By.xpath(tabLocator), 5);
-            WebElement tabElement = Driver.getDriver().findElement(By.xpath(tabLocator));
-            new Actions(Driver.getDriver()).moveToElement(tabElement).pause(200).doubleClick(tabElement).build().perform();
-        } catch (Exception e) {
-            BrowserUtils.clickWithWait(By.xpath(tabLocator), 5);
-        }
-        try {
-            BrowserUtils.waitForPresenceOfElement(By.xpath(moduleLocator), 5);
-            BrowserUtils.waitForVisibility(By.xpath(moduleLocator), 5);
-            BrowserUtils.scrollToElement(Driver.getDriver().findElement(By.xpath(moduleLocator)));
-            Driver.getDriver().findElement(By.xpath(moduleLocator)).click();
-        } catch (Exception e) {
-//            BrowserUtils.waitForStaleElement(Driver.get().findElement(By.xpath(moduleLocator)));
-            BrowserUtils.clickWithTimeOut(Driver.getDriver().findElement(By.xpath(moduleLocator)),  5);
-        }
-    }
-
-
-
-
-
 
 }
+
+
+
+
+

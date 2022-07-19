@@ -46,9 +46,9 @@ public class BrowserUtils {
 
 
 
-    public static WebElement waitForClickablility(By locator, int timeout) {
+    public static WebElement waitForClickablility(WebElement element, int timeout) {
         WebDriverWait wait = new WebDriverWait(Driver.getDriver(), timeout);
-        return wait.until(ExpectedConditions.elementToBeClickable(locator));
+        return wait.until(ExpectedConditions.elementToBeClickable(element));
     }
 
 
@@ -97,14 +97,9 @@ public class BrowserUtils {
     }
 
 
-    public static void waitForPresenceOfElement(By by, long time) {
-        new WebDriverWait(Driver.getDriver(), time).until(ExpectedConditions.presenceOfElementLocated(by));
-    }
-
-
-    public static WebElement waitForVisibility(By locator, int timeout) {
+    public static WebElement waitForVisibility(WebElement element, int timeout) {
         WebDriverWait wait = new WebDriverWait(Driver.getDriver(), timeout);
-        return wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+        return wait.until(ExpectedConditions.visibilityOf(element));
     }
 
 
