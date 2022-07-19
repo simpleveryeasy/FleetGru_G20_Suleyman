@@ -32,6 +32,8 @@ Feature: Users should be able to use filter menu
   Scenario: the user can apply filters by clicking as a driver
     When the user enters the driver information
     When the user navigates to Fleet Vehicles module
+    When the user waits because it's driver
+    When the user scroll to filter icon and clicks
     When the user clicks the manage filters button
     Then filter names become clickable
 

@@ -17,6 +17,7 @@ public class FilterMenuStepDef {
     @When("the user navigates to Fleet Vehicles module")
     public void the_user_navigates_to_fleet_vehicles_module() {
         manageFiltersPage.waitUntilLoaderScreenDisappear();
+        BrowserUtils.sleep(5);
         manageFiltersPage.navigateToFleetVehicleModule();
         BrowserUtils.sleep(5);
 
@@ -51,6 +52,16 @@ public class FilterMenuStepDef {
     @Then("filter names become clickable")
     public void filter_names_become_clickable() {
         Assert.assertTrue(manageFiltersPage.licensePlateCheckbox.isDisplayed());
+    }
+
+    @When("the user waits because it's driver")
+    public void the_user_waits_because_it_s_driver() {
+        BrowserUtils.sleep(10);
+    }
+
+    @When("the user scroll to filter icon and clicks")
+    public void the_user_scroll_to_filter_icon_and_clicks() {
+       BrowserUtils.scrollToElementAndClick(manageFiltersPage.filterIcon);
     }
 
 

@@ -28,8 +28,8 @@ public class ManageFiltersPage extends BasePage {
 
         try {
             BrowserUtils.waitForVisibility(vehicleModule, 5);
-            BrowserUtils.scrollToElement(vehicleModule);
-            vehicleModule.click();
+            BrowserUtils.scrollToElementAndClick(vehicleModule);
+
         } catch (Exception e) {
             System.out.println("vehicleModule not clickable");
         }
