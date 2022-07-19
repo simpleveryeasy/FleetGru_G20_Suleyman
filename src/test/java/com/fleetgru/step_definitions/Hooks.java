@@ -14,7 +14,7 @@ public class Hooks {
     @Before()
     public void setUp(){
         //driver = Driver.get();
-        Driver.getDriver().manage().window().fullscreen();
+        Driver.getDriver().manage().window().maximize();
         Driver.getDriver().manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
     }
 
