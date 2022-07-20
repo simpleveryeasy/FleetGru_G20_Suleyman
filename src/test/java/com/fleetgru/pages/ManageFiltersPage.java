@@ -39,16 +39,15 @@ public class ManageFiltersPage extends BasePage {
     @FindBy(xpath = "//select[@data-action = 'add-filter-select']")
     public WebElement filtersDropdown;
 
-    /*public Select getFilter(){
-        return new Select(filtersDropdown);
-    }*/
-
 
     @FindBy(xpath = "//input[@type = 'search']")
     public WebElement filterInputBox;
 
     public String typedFilter = "";
     public String clickedFilter = "";
+
+    @FindBy(xpath = "(//i[@class = 'fa-refresh'])[1]")
+    public WebElement resetIcon;
 
 
 

@@ -17,6 +17,8 @@ import org.openqa.selenium.support.ui.Select;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.Assert.fail;
+
 public class FilterMenuStepDef {
 
     VehiclesPage vehiclesPage = new VehiclesPage();
@@ -63,21 +65,35 @@ public class FilterMenuStepDef {
     @Then("filter names become clickable")
     public void filter_names_become_clickable() {
         manageFiltersPage.waitUntilLoaderScreenDisappear();
-        BrowserUtils.sleep(5);
         Select select = new Select(manageFiltersPage.filtersDropdown);
-        System.out.println("select.isMultiple() = " + select.isMultiple());
-        Assert.assertTrue(select.isMultiple());
-
         JavascriptExecutor executor = (JavascriptExecutor) Driver.getDriver();
         executor.executeScript("arguments[0].setAttribute('style','visibility:visible;');",select);
         select.selectByVisibleText("Tags");
+        select.selectByIndex(0);
+        select.selectByValue("Driver");
+        BrowserUtils.sleep(5);
+        Assert.assertTrue(select.isMultiple());
+    }
 
+    @When("the user clicks one of the filter")
+    public void theUserClicksOneOfTheFilter() {
+        manageFiltersPage.waitUntilLoaderScreenDisappear();
+        Select select = new Select(manageFiltersPage.filtersDropdown);
+        JavascriptExecutor executor = (JavascriptExecutor) Driver.getDriver();
+        executor.executeScript("arguments[0].setAttribute('style','visibility:visible;');",select);
+        select.selectByVisibleText("Tags");
+        BrowserUtils.sleep(5);
 
+    }
 
-        List<WebElement> options = select.getOptions();
-        for (WebElement option : options) {
-            System.out.println(option.getText());
-        }
+    @Then("the filter turns clicked")
+    public void theFilterTurnsClicked() {
+        manageFiltersPage.waitUntilLoaderScreenDisappear();
+        Select select = new Select(manageFiltersPage.filtersDropdown);
+        JavascriptExecutor executor = (JavascriptExecutor) Driver.getDriver();
+        executor.executeScript("arguments[0].setAttribute('style','visibility:visible;');",select);
+        System.out.println("select.getFirstSelectedOption().getText() = " + select.getFirstSelectedOption().getText());
+        Assert.assertEquals(select.getFirstSelectedOption().getText(), "Tags");
     }
 
     @When("the user waits because it's driver")
@@ -93,10 +109,10 @@ public class FilterMenuStepDef {
 
     @When("the user types {string} into input box")
     public void theUserTypesIntoInputBox(String arg0) {
+        manageFiltersPage.waitUntilLoaderScreenDisappear();
         manageFiltersPage.filterInputBox.sendKeys(arg0, Keys.ENTER);
         manageFiltersPage.typedFilter = arg0;
         BrowserUtils.sleep(3);
-
 
     }
 
@@ -105,9 +121,35 @@ public class FilterMenuStepDef {
 
     @Then("typed filter name becomes clickable")
     public void typed_filter_name_becomes_clickable() {
-        System.out.println("manageFiltersPage.typedFilter = " + manageFiltersPage.typedFilter);
+        Select select = new Select(manageFiltersPage.filtersDropdown);
+        JavascriptExecutor executor = (JavascriptExecutor) Driver.getDriver();
+        executor.executeScript("arguments[0].setAttribute('style','visibility:visible;');",select);
+        select.selectByVisibleText(manageFiltersPage.typedFilter);
+        BrowserUtils.sleep(2);
+        manageFiltersPage.clickedFilter = select.getAllSelectedOptions().get(0).getText();
+        Assert.assertEquals(manageFiltersPage.typedFilter, manageFiltersPage.clickedFilter);
 
+    }
+
+
+    @When("the user clicks the reset icon")
+    public void theUserClicksTheResetIcon() {
+
+        manageFiltersPage.waitUntilLoaderScreenDisappear();
         BrowserUtils.sleep(3);
+        JavascriptExecutor js = (JavascriptExecutor) Driver.getDriver();
+        js.executeScript("arguments[0].click();", manageFiltersPage.resetIcon);
+
+    }
+
+    @Then("all filters removed")
+    public void allFiltersRemoved() {
+        manageFiltersPage.waitUntilLoaderScreenDisappear();
+        BrowserUtils.sleep(3);
+        Select select = new Select(manageFiltersPage.filtersDropdown);
+        JavascriptExecutor executor = (JavascriptExecutor) Driver.getDriver();
+        executor.executeScript("arguments[0].setAttribute('style','visibility:visible;');",select);
+        Assert.assertFalse(select.getOptions().get(0).isSelected());
 
 
 
