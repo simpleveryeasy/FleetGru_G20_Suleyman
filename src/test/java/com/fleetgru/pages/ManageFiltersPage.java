@@ -4,9 +4,28 @@ import com.fleetgru.utilities.BrowserUtils;
 import com.fleetgru.utilities.Driver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.CacheLookup;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.Select;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ManageFiltersPage extends BasePage {
+
+    // to check login correct page(driver->quick launchpad, other->dashboard)
+    @FindBy(xpath = "//h1[@class='oro-subtitle']")
+    public WebElement homepageSubTitle;
+
+    @FindBy(css = "div[class='loader-mask shown']")
+    @CacheLookup
+    protected WebElement loaderMask;
+
+    @FindBy(xpath = "//span[contains(text(),'Fleet') and @class = 'title title-level-1']")
+    public WebElement fleetTab;
+
+    @FindBy(xpath = "//span[.='Vehicles']")
+    public WebElement vehicleModule;
 
     @FindBy(xpath = "//i[@class='fa-filter hide-text']")
     public WebElement filterIcon;
@@ -16,6 +35,27 @@ public class ManageFiltersPage extends BasePage {
 
     @FindBy(id = "ui-multiselect-0-0-option-0")
     public WebElement licensePlateCheckbox;
+
+    @FindBy(xpath = "//select[@data-action = 'add-filter-select']")
+    public WebElement filtersDropdown;
+
+    /*public Select getFilter(){
+        return new Select(filtersDropdown);
+    }*/
+
+
+    @FindBy(xpath = "//input[@type = 'search']")
+    public WebElement filterInputBox;
+
+    public String typedFilter = "";
+    public String clickedFilter = "";
+
+
+
+
+
+
+
 
     public void navigateToFleetVehicleModule() {
 

@@ -1,6 +1,7 @@
 package com.fleetgru.step_definitions;
 
 import com.fleetgru.pages.LoginPage;
+import com.fleetgru.pages.ManageFiltersPage;
 import com.fleetgru.utilities.BrowserUtils;
 import com.fleetgru.utilities.ConfigurationReader;
 import com.fleetgru.utilities.Driver;
@@ -12,6 +13,7 @@ import org.junit.Assert;
 public class LoginStepDef {
 
     LoginPage loginPage = new LoginPage();
+    ManageFiltersPage manageFiltersPage = new ManageFiltersPage();
 
     @Given("the user is on the login page")
     public void the_user_is_on_the_login_page() throws InterruptedException {
@@ -33,7 +35,7 @@ public class LoginStepDef {
     @Then("the user should be able to login")
     public void the_user_should_be_able_to_login() throws InterruptedException {
         BrowserUtils.sleep(5);
-        String actualTitle = loginPage.homepageSubTitle.getText();
+        String actualTitle = manageFiltersPage.homepageSubTitle.getText();
         String expectedTitle = "";
         switch (loginPage.userType){
             case "driver":

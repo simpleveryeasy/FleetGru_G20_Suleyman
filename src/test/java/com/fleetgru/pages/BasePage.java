@@ -40,15 +40,9 @@ public abstract class BasePage {
     @FindBy(linkText = "My User")
     public WebElement myUser;
 
-    // to check login correct page(driver->quick launchpad, other->dashboard)
-    @FindBy(xpath = "//h1[@class='oro-subtitle']")
-    public WebElement homepageSubTitle;
 
-    @FindBy(xpath = "//span[contains(text(),'Fleet') and @class = 'title title-level-1']")
-    public WebElement fleetTab;
 
-    @FindBy(xpath = "//span[.='Vehicles']")
-    public WebElement vehicleModule;
+
 
     //<=========================   Base Methods    ==============================================>
 
